@@ -1,0 +1,33 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "[![Actions Status](https://github.com/maq7P/js-algorithms-project-lvl1/workflows/hexlet-check/badge.svg)](https://github.com/maq7P/js-algorithms-project-lvl1/actions)",
+  "main": "src/index.js",
+  "simple-git-hooks": {
+    "pre-push": "make lint"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "test": "npx jest"
+  },
+  "type": "module",
+  "author": "Max",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maq7P/js-algorithms-project-lvl1/issues"
+  },
+  "homepage": "https://github.com/maq7P/js-algorithms-project-lvl1#readme",
+  "devDependencies": {
+    "@jest/globals": "^28.0.3",
+    "eslint": "^8.14.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^26.1.5",
+    "jest": "^28.0.3",
+    "jest-cli": "^28.0.3",
+    "npm-check-updates": "^12.5.11",
+    "simple-git-hooks": "^2.7.0"
+  }
+}
