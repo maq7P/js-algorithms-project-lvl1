@@ -1,4 +1,4 @@
-import {docs} from './moc';
+import {docs} from './moc.js';
 
 const buildSearchEngine = (docs) => {
   return {
@@ -6,13 +6,14 @@ const buildSearchEngine = (docs) => {
       const res = [];
       for (let i = 0; i < docs.length; i++) {
         const document = docs[i];
-        const docText = document.text;
+        const docText = document.text
         const docId = document.id;
         const words = docText
           .split(" ");
 
         for (let i = 0; i < words.length; i++) {
-          words[i] === word && !res.includes(docId) && res.push(docId);
+          const curWord = words[i].replace(/[,.?!]/g, "");
+          curWord === word && !res.includes(docId) && res.push(docId);
         }
       }
 
@@ -28,7 +29,7 @@ const buildSearchEngine = (docs) => {
 const searchEngine = buildSearchEngine(docs); // поисковый движок запомнил документы
 
 // поиск по документам
-searchEngine.search('shoot'); // ['doc1', 'doc2']
+console.log(searchEngine.search('pint')); // ['doc1', 'doc2']
 
 const searchEngine2 = buildSearchEngine([]); // Документы пусты
 searchEngine2.search(''); // []
