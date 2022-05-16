@@ -11,10 +11,15 @@ const buildSearchEngine = (docs) => {
         const words = docText
           .split(" ");
 
+        let relevance = 0
         for (let i = 0; i < words.length; i++) {
           const curWord = words[i].replace(/[,.?!]/g, "");
-          curWord === word && !res.includes(docId) && res.push(docId);
+          curWord === word && relevance++
         }
+        relevance > 0 && res.push({
+          docId,
+          relevance
+        })
       }
 
       if(!res.length){
@@ -22,6 +27,8 @@ const buildSearchEngine = (docs) => {
       }
 
       return res
+        .sort((doc1, doc2) => doc2.relevance - doc1.relevance )
+        .map(doc => doc.docId)
     }
   }
 }
@@ -29,7 +36,7 @@ const buildSearchEngine = (docs) => {
 const searchEngine = buildSearchEngine(docs); // поисковый движок запомнил документы
 
 // поиск по документам
-console.log(searchEngine.search('pint')); // ['doc1', 'doc2']
+console.log(searchEngine.search('shoot')); // ['doc1', 'doc2']
 
 const searchEngine2 = buildSearchEngine([]); // Документы пусты
 searchEngine2.search(''); // []
