@@ -1,50 +1,49 @@
 import {docs} from './moc.js';
 
-const buildSearchEngine = (docs) => {
-  return {
-    search: (word) => {
-      const wordArr = word.split(" ");
-      const res = [];
+class BuildSearchEngine {
+  constructor(docs) {
+    this.docs = docs
+  }
+  static invertIndexById(docs){
+    const index = {};
 
-      for (let i = 0; i < docs.length; i++) {
-        const document = docs[i];
-        const docText = document.text
-        const docId = document.id;
-        const words = docText
-          .split(" ");
+    for(let i = 0; i < docs.length; i++){
+      const doc = docs[i];
+      const docText = doc.text
+      const docId = doc.id;
+      const words = docText.split(" ");
 
-        let relevance = 0
-        for (let i = 0; i < words.length; i++) {
-          const curWordInText = words[i].replace(/[,.?!]/g, "");
+      for(let i = 0; i < words.length; i++){
+        const curWordInText = words[i].toLowerCase().replace(/[,.?!]/g, "");
 
-          for(let i = 0; i < wordArr.length; i++){
-            curWordInText === wordArr[i] && relevance++
-          }
-        }
-
-        relevance > 0 && res.push({
-          docId,
-          relevance
-        })
+        index[curWordInText] && !index[curWordInText].includes(docId) && index[curWordInText].push(docId);
+        !index[curWordInText] && (index[curWordInText] = [docId]);
       }
-
-      if(!res.length){
-        return "Документы пусты";
-      }
-
-      return res
-        .sort((doc1, doc2) => doc2.relevance - doc1.relevance )
-        .map(doc => doc.docId)
     }
+
+    return index
+  }
+
+  search(word){
+    const wordArr = word.split(" ");
+
+    const res = [];
+    for (let i = 0; i < wordArr.length; i++){
+      const word = wordArr[i].toLowerCase().replace(/[,.?!]/g, "");
+      const target = BuildSearchEngine.invertIndexById(this.docs)[word];
+      target && res.push(...target);
+    }
+
+    return [...new Set(res)];
   }
 }
 
-const searchEngine = buildSearchEngine(docs); // поисковый движок запомнил документы
+const searchEngine = new BuildSearchEngine(docs); // поисковый движок запомнил документы
 
 // поиск по документам
-console.log(searchEngine.search('shoot')); // ['doc1', 'doc2']
+console.log(searchEngine.search('shoot kke')); // ['doc1', 'doc2']
 
-const searchEngine2 = buildSearchEngine([]); // Документы пусты
-searchEngine2.search(''); // []
+const searchEngine2 =  new BuildSearchEngine([]); // Документы пусты
+console.log(searchEngine2.search('')); // []
 
-export default buildSearchEngine;
+export default BuildSearchEngine;
