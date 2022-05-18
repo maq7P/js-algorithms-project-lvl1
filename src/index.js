@@ -3,7 +3,9 @@ import {docs} from './moc.js';
 const buildSearchEngine = (docs) => {
   return {
     search: (word) => {
+      const wordArr = word.split(" ");
       const res = [];
+
       for (let i = 0; i < docs.length; i++) {
         const document = docs[i];
         const docText = document.text
@@ -13,9 +15,13 @@ const buildSearchEngine = (docs) => {
 
         let relevance = 0
         for (let i = 0; i < words.length; i++) {
-          const curWord = words[i].replace(/[,.?!]/g, "");
-          curWord === word && relevance++
+          const curWordInText = words[i].replace(/[,.?!]/g, "");
+
+          for(let i = 0; i < wordArr.length; i++){
+            curWordInText === wordArr[i] && relevance++
+          }
         }
+
         relevance > 0 && res.push({
           docId,
           relevance
