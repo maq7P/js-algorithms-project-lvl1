@@ -20,13 +20,10 @@ class BuildSearchEngine {
 
   #calcTargetTF_IDF(builtIndex, targetArr){
     const score = {};
-    let commonFrequency = 0;
 
     for(let i = 0; i < targetArr.length; i++){
       const word = targetArr[i].toLowerCase();
-      for(let docId in builtIndex[word]){
-        commonFrequency++;
-      }
+      let commonFrequency = Object.keys(builtIndex[word]).length;
 
       if(!commonFrequency) return {}
 
